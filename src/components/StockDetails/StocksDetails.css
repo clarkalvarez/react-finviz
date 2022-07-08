@@ -1,0 +1,23 @@
+.text-left {
+  margin-right: auto;
+  margin-left: 0px;
+}
+
+.text-right {
+  margin-left: auto;
+  margin-right: 0px;
+}
+
+.info {
+  display: flex;
+}
+
+.card-img-top {
+  cursor: pointer;
+}
+
+.card-body {
+  padding-top: 0;
+  padding-right: 0;
+  padding-left: 0;
+}
