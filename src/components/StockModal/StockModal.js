@@ -6,15 +6,15 @@ const StockModal = (props) => {
   const { handleClose, show, fetchStock, storeStock } = props;
 
   const showHideClassName = show ? "modal display-block" : "modal display-none";
-  let text;
+  let stockCode;
 
   const onTextClick = async () => {
     handleClose();
-    await fetchStock(text);
+    await storeStock(stockCode);
   };
 
-  const setText = (inputText) => {
-    text = inputText;
+  const setText = (inputStockCode) => {
+    stockCode = inputStockCode;
   };
 
   return (
@@ -25,7 +25,7 @@ const StockModal = (props) => {
           <input
             type="text"
             className="form-control stock-text"
-            value={text}
+            value={stockCode}
             onChange={(e) => setText(e.target.value)}
           />
           <div className="input-group-append">

@@ -1,4 +1,5 @@
-import { stocksdb, finvizendpoint } from "../apis/stream";
+import history from "../../history";
+import { finvizendpoint } from "../apis/stream";
 import {
   GET_NEWS,
   GET_STOCKS,
@@ -6,42 +7,8 @@ import {
   POST_STOCK,
   GET_SAVE_STOCK,
   GET_ONE_NEWS,
+  UPDATE_ONE_STOCK,
 } from "./types";
-
-export const getNews = (data) => {
-  return {
-    type: GET_NEWS,
-    payload: data,
-  };
-};
-
-export const getOneNews = (data) => {
-  return {
-    type: GET_ONE_NEWS,
-    payload: data,
-  };
-};
-
-export const getStock = (data) => {
-  return {
-    type: GET_SAVE_STOCK,
-    payload: data,
-  };
-};
-
-export const postNews = (data) => {
-  return {
-    type: POST_NEWS,
-    payload: data,
-  };
-};
-
-export const postStock = (data) => {
-  return {
-    type: POST_STOCK,
-    payload: data,
-  };
-};
 
 export const fetchStock = (stockcode) => async (dispatch) => {
   const response = await finvizendpoint.get(
@@ -49,20 +16,23 @@ export const fetchStock = (stockcode) => async (dispatch) => {
   );
   const responseData = response.data;
   dispatch({ type: GET_SAVE_STOCK, payload: response.data });
-  await stocksdb.post("/stocks", responseData);
+  await finvizendpoint.post("/api/stocks", responseData);
 };
 
 export const fetchStocks = () => async (dispatch) => {
-  const response = await stocksdb.get("/stocks");
-  console.log("response");
+  const response = await finvizendpoint.get("/api/stocks");
+  console.log("fetchStocks");
   console.log(response);
 
   dispatch({ type: GET_STOCKS, payload: response.data });
 };
 
 export const fetchOneNews = (stockCode) => async (dispatch) => {
-  const response = await stocksdb.get("/news");
-
+  const response = await finvizendpoint.get(
+    `/api/news/:?stockCode=${stockCode}`
+  );
+  console.log("fetchOneNews");
+  console.log(response);
   dispatch({ type: GET_ONE_NEWS, payload: response.data });
 };
 
@@ -71,19 +41,36 @@ export const fetchNews = (stockcode) => async (dispatch) => {
     `/stockInfo?stockCode=${stockcode}`
   );
   const responseData = response.data;
-
+  console.log("fetchNews");
+  console.log(response);
   dispatch({ type: GET_NEWS, payload: responseData });
-  await stocksdb.post("/news", responseData);
+  await finvizendpoint.post("/news", responseData);
 };
 
 export const storeNews = (newsValues) => async (dispatch) => {
-  const response = await stocksdb.post("/news", { newsValues });
-
+  const response = await finvizendpoint.post("/api/news", { newsValues });
+  console.log("storeNews");
+  console.log(response);
   dispatch({ type: POST_NEWS, payload: response.data });
+  history.push("/");
 };
 
-export const storeStock = (stockValues) => async (dispatch) => {
-  const response = await stocksdb.post("/stocks", { stockValues });
-
+export const storeStock = (stockCode) => async (dispatch) => {
+  const response = await finvizendpoint.post(
+    `/api/stocks/?stockCode=${stockCode}`
+  );
+  console.log("storeStock");
+  console.log(response);
   dispatch({ type: POST_STOCK, payload: response.data });
+  history.push("/");
+};
+
+export const updateOneStock = (stockCode) => async (dispatch) => {
+  const response = await finvizendpoint.put(
+    `/api/stocks/:?stockCode=${stockCode}`
+  );
+  console.log("UPDATE_ONE_STOCK");
+  console.log(response);
+  dispatch({ type: UPDATE_ONE_STOCK, payload: response.data });
+  history.push("/");
 };

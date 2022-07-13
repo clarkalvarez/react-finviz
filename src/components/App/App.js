@@ -1,12 +1,13 @@
 import StockInfo from "../StockInfo/StockInfo";
 import StocksDetails from "../StockDetails/StocksDetails";
-import { Route, BrowserRouter, Routes } from "react-router-dom";
+import { Route, BrowserRouter, Routes, Router, Switch } from "react-router-dom";
 import "./App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import StockModal from "../StockModal/StockModal.js";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import history from "../../history";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -38,12 +39,14 @@ class App extends Component {
             onClick={this.showModal}
           />
         </div>
-        <BrowserRouter>
-          <Routes>
-            <Route exact path="/" element={<StocksDetails />} />
-            <Route path="/:stockcode" element={<StockInfo />} />
-          </Routes>
-        </BrowserRouter>
+        <Router history={history}>
+          <div>
+            <Switch>
+              <Route path="/" exact component={StocksDetails} />
+              <Route path="/:stockcode" component={StockInfo} />
+            </Switch>
+          </div>
+        </Router>
       </div>
     );
   }

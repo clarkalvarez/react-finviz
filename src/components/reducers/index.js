@@ -7,6 +7,7 @@ import {
   POST_STOCK,
   GET_SAVE_STOCK,
   GET_ONE_NEWS,
+  UPDATE_ONE_STOCK,
 } from "../actions/types";
 
 export default (state = {}, action) => {
@@ -23,6 +24,8 @@ export default (state = {}, action) => {
       return { ...state, stocks: action.payload };
     case GET_ONE_NEWS:
       return { ...state, ..._.mapKeys(action.payload, "id") };
+    case UPDATE_ONE_STOCK:
+      return { ...state };
     default:
       return state;
   }

@@ -6,7 +6,8 @@ import { Link } from "react-router-dom";
 
 class StockInfo extends React.Component {
   componentDidMount() {
-    this.props.fetchOneNews();
+    const stockCode = this.props.match.params.stockcode;
+    this.props.fetchOneNews(stockCode);
   }
 
   renderList() {
